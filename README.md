@@ -8,7 +8,8 @@ promts is a native TypeScript based implementation of promclient.
 Counters are monotonically increasing--counters never go down.  Think http request.
 ```ts
     import { MetricsManager } from 'https://deno.land/x/promts@v0.1.0
-    const httpTotalRequests = MetricsManager.getCounter("http_requests_total").with({ service: "web" });
+    const httpTotalRequests = MetricsManager.getCounter("http_requests_total")
+      .with({ service: "web" });
     httpTotalRequests.inc();
 ```
 
