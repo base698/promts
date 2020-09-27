@@ -8,7 +8,7 @@ Pronounced: Prom-tsss
 ### Counters
 Counters are monotonically increasing--counters never go down.  Think http request.
 ```ts
-    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.0
+    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.1
     const httpTotalRequests = MetricsManager.getCounter("http_requests_total")
       .with({ service: "web" });
     httpTotalRequests.inc();
@@ -17,7 +17,7 @@ Counters are monotonically increasing--counters never go down.  Think http reque
 ### Gauges
 Gauges can go up and down... Think water levels, temperature, thread counts.
 ```ts
-    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.0
+    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.1
     const processCount = MetricsManager.getGauge("process_count").with({app:"server"});
     processCount.inc(); // 1
     processCount.inc(3);
@@ -30,7 +30,7 @@ Gauges can go up and down... Think water levels, temperature, thread counts.
 Histograms can be though of as a list of counters.  These counters each represent a bucket.  Buckets have a label `le` which denotes the upper bound.  Histograms also contain their sum and count.
 ```ts
 
-    import { Histogram } from 'https://deno.land/x/promts@v0.1.0
+    import { Histogram } from 'https://deno.land/x/promts@v0.1.1
     const histogram = new Histogram("http_request_duration");
     histogram.observe(0.01);
     histogram.observe(0.1);
@@ -44,7 +44,7 @@ Histograms can be though of as a list of counters.  These counters each represen
 
 ### Dumping the metrics in prometheus format
 ```ts
-    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.0
+    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.1
     const metricsData = MetricsManager.toString();
 ```
 
