@@ -1,6 +1,7 @@
 # promts
 
 promts is a native TypeScript based implementation of promclient.  
+Pronounced: Prom-tsss
 
 ## Usage
 
