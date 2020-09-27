@@ -212,6 +212,7 @@ class MetricsManagerImpl {
         return result;
     }
 
+    // TODO: fix and make configurable
     initMetricsPush() {
         this.intervalID = setInterval(() => {
             log.debug("initMetricsPush has started");
