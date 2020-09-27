@@ -1,0 +1,51 @@
+import { Metric, SUPRESS_HEADER, Labels } from './types.ts';
+import { toStringLabels } from './utils.ts';
+
+export class Gauge extends Metric {
+    private total = 0;
+
+    constructor(name: string, labels: Labels = {}, help = '') {
+        super(name, labels, help);
+    }
+
+    getLabels(): Labels {
+        return this.labels;
+    }
+
+    getTotal(): number {
+        return this.total;
+    }
+
+    getName(): string {
+        return this.name;
+    }
+
+    reset(): number {
+        this.total = 0;
+        return this.getTotal();
+    }
+
+    inc(n = 1): number {
+        this.total += n;
+        return this.total;
+    }
+
+    dec(n = 1): number {
+        this.total -= n;
+        return this.total;
+    }
+
+    toString(supress = SUPRESS_HEADER): string {
+        let result = '';
+        if (!supress) {
+            if (this.help != '') {
+                result += `# HELP ${this.name} ${this.help}`
+            }
+
+            result += `# TYPE ${this.name} gauge\n`;
+        }
+
+        result += `${this.name}{${toStringLabels(this.labels)}} ${this.total}\n`;
+        return result;
+    }
+}
