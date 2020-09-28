@@ -1,0 +1,20 @@
+name: Deno CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - run: npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+    - run: node_modules/eslint/bin/eslint.js . --ext .ts
+      env:
+        CI: true
+
