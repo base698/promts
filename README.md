@@ -1,6 +1,6 @@
 # promts
 
-promts is a native TypeScript based implementation of promclient.  
+promts is a native TypeScript based implementation of promclient.
 Pronounced: Prom-tsss
 
 ## Usage
@@ -21,7 +21,7 @@ Gauges can go up and down... Think water levels, temperature, thread counts.
     const processCount = MetricsManager.getGauge("process_count").with({app:"server"});
     processCount.inc(); // 1
     processCount.inc(3);
-    processCount.dec(); 
+    processCount.dec();
     processCount.getTotal(); // 3
 
 ```
@@ -40,6 +40,12 @@ Histograms can be though of as a list of counters.  These counters each represen
     histogram.getSum();   // 10.11
     histogram.toString(); // dump to string
 
+```
+
+### Pushgateway
+```ts
+    const pushgateway = new PushGateway("test_job");
+    pushgateway.sendOnInterval(MetricsManager);
 ```
 
 ### Dumping the metrics in prometheus format
@@ -66,8 +72,17 @@ $ npm install --save-dev eslint typescript @typescript-eslint/parser @typescript
 + Install Deno: https://deno.land/manual/getting_started/installation
 
 
+### Run the pushgateway
+```
+$ docker run -d -p 9091:9091 prom/pushgateway
+```
+
+### Run the tests
+```
+$ make test
+```
+
 ## Future Roadmap
 
 + Add support for configurable histogram buckets.
 + Add the summary metric type.
-
