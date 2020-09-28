@@ -24,10 +24,6 @@ jobs:
         image: prom/pushgateway
         ports:
           - 9091
-        env:
-          PUSHGATEWAY_HOST: pushgateway
-          PUSHGATEWAY_PORT: ${{ job.services.pushgateway.ports[9091] }}
-
     strategy:
       matrix:
         deno: ["v1.x", "nightly"]
@@ -45,3 +41,6 @@ jobs:
         run: |
           echo echo port on ${{ job.services.pushgateway.ports['9091'] }}
           deno test --allow-env --allow-net
+        env:
+          PUSHGATEWAY_HOST: pushgateway
+          PUSHGATEWAY_PORT: ${{ job.services.pushgateway.ports[9091] }}
