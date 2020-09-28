@@ -22,6 +22,8 @@ jobs:
       pushgateway:
         # Docker Hub image
         image: prom/pushgateway
+        ports:
+          - 9091
         env:
           PG_PORT: ${{ job.services.pushgateway.ports[9091] }}
 
@@ -39,4 +41,6 @@ jobs:
         with:
           deno-version: ${{ matrix.deno }} # tests across multiple Deno versions
       - name: Run Tests
-        run: deno test --allow-env --allow-net
+        run: |
+          echo echo ${{ job.services.pushgateway.ports['9091'] }}
+          deno test --allow-env --allow-net
