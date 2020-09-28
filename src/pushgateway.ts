@@ -11,7 +11,7 @@ export class PushGateway {
     protocol: string;
     interval = -1;
 
-    constructor(job: string, hostname = "localhost:9091", pushInterval = 30000, protocol = "http") {
+    constructor(job: string, hostname = "pushgateway:9091", pushInterval = 30000, protocol = "http") {
         this.job = job;
         this.hostname = hostname;
         this.pushInterval = pushInterval;
