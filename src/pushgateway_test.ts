@@ -1,6 +1,5 @@
-import { assertArrayContains, assertThrowsAsync } from "https://deno.land/std@0.71.0/testing/asserts.ts";
+import { assertArrayContains } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { PushGateway } from "./pushgateway.ts";
-import { Counter } from "./counter.ts";
 import { PUSHGATEWAY_HOST } from "./config.ts";
 import { create } from "./metricsmanager.ts";
 

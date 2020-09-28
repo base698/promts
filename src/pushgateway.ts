@@ -1,4 +1,3 @@
-import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
 import { Stringy } from "./types.ts";
 import { PUSHGATEWAY_HOST } from "./config.ts";
 
@@ -19,13 +18,13 @@ export class PushGateway {
         this.protocol = protocol;
     }
 
-    sendOnInterval(stringer: Stringy) {
+    sendOnInterval(stringer: Stringy): void {
         this.interval = setInterval(() => {
             this.send(stringer.toString());
         }, this.pushInterval);
     }
 
-    clearInterval() {
+    clearInterval(): void {
         clearInterval(this.pushInterval);
     }
 

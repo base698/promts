@@ -1,7 +1,6 @@
 import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
 import { Sha256 } from "https://deno.land/std@0.71.0/hash/sha256.ts";
 import { Counter, Gauge, Histogram } from "../mod.ts";
-import { PushGateway } from "./pushgateway.ts";
 import { Stringy, Labels, SUPRESS_HEADER } from "./types.ts";
 
 /**
