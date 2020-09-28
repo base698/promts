@@ -67,7 +67,7 @@ export class Counter extends Metric {
         let result = '';
         if (!supress) {
             if (this.help != '') {
-                result += `# HELP ${this.name} ${this.help}`
+                result += `# HELP ${this.name} ${this.help}\n`;
             }
 
             result += `# TYPE ${this.name} counter\n`;
