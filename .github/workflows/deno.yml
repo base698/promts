@@ -15,6 +15,23 @@ on:
     branches: [master]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v1
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+    - run: node_modules/eslint/bin/eslint.js . --ext .ts
+
   test:
     runs-on: ${{ matrix.os }}
     services:
