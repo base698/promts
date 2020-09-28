@@ -39,7 +39,7 @@ export class Gauge extends Metric {
         let result = '';
         if (!supress) {
             if (this.help != '') {
-                result += `# HELP ${this.name} ${this.help}`
+                result += `# HELP ${this.name} ${this.help}\n`;
             }
 
             result += `# TYPE ${this.name} gauge\n`;
