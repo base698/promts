@@ -41,7 +41,7 @@ Deno.test("HistoryMetricCounter", async (): Promise<void> => {
 
 });
 
-Deno.test("bad values", async (): Promise<void> => {
+Deno.test("invalid values", async (): Promise<void> => {
 
     const timeoutErrorMetricCounter: Counter = new Counter("hi");
 
@@ -55,5 +55,21 @@ Deno.test("bad values", async (): Promise<void> => {
         timeoutErrorMetricCounter.inc(-2);
     });
 
+
+});
+
+Deno.test("Counter.toString()", async (): Promise<void> => {
+
+    const hi: Counter = new Counter("hi", { service: "web" }, "is times I said hello");
+
+    const expected = `hi{service="web"} 1\n`;
+    const expectedHelp = `# HELP hi is times I said hello
+# TYPE hi counter
+hi{service="web"} 1
+`;
+
+    hi.inc();
+    assertEquals(hi.toString(), expected);
+    assertEquals(hi.toString(false), expectedHelp);
 
 });
