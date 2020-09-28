@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     services:
       # Label used to access the service container
-      redis:
+      pushgateway:
         # Docker Hub image
         image: prom/pushgateway
 
