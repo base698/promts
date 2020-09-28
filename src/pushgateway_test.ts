@@ -11,7 +11,7 @@ metrics_coll_total{instance="cache10.ama",handler="handler2"} 4
     await pushgateway.send(payload);
 
     const response = await fetch(
-        "http://localhost:9091/metrics",
+        "http://pushgateway:9091/metrics",
         {
             method: "GET"
         },
@@ -37,7 +37,7 @@ Deno.test("pushgateway metricsmanager", async (): Promise<void> => {
     await pushgateway.send(mm.toString());
 
     const response = await fetch(
-        "http://localhost:9091/metrics",
+        "http://pushgateway:9091/metrics",
         {
             method: "GET"
         },
