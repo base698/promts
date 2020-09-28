@@ -42,5 +42,5 @@ jobs:
           echo echo port on ${{ job.services.pushgateway.ports['9091'] }}
           deno test --allow-env --allow-net
         env:
-          PUSHGATEWAY_HOST: pushgateway
+          PUSHGATEWAY_HOST: localhost
           PUSHGATEWAY_PORT: ${{ job.services.pushgateway.ports[9091] }}
