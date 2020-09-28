@@ -1,8 +1,10 @@
 import { assertThrows, assertEquals } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { Counter, HistoryCounter } from "./counter.ts";
-import {
-    metricTimeoutError,
-} from "../mod.ts";
+
+const metricTimeoutError = "process_timeout_errors_total";
+const metricNumberOfRequests = "http_requests_total";
+const metricReqDuration = "process_execution_duration_seconds";
+
 
 function createTimeoutErrorsMetricCounter(): HistoryCounter {
     const labels: Record<string, string> = {};

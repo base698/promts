@@ -6,10 +6,6 @@ export const VALUE = 1;
 export const TS = 0;
 export const SUPRESS_HEADER = true;
 
-export const metricTimeoutError = "process_timeout_errors_total";
-export const metricNumberOfRequests = "http_requests_total";
-export const metricReqDuration = "process_execution_duration_seconds";
-
 export interface Stringy {
     toString(suppress?: boolean): string
 }
