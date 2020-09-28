@@ -25,7 +25,8 @@ jobs:
         ports:
           - 9091
         env:
-          PG_PORT: ${{ job.services.pushgateway.ports[9091] }}
+          PUSHGATEWAY_HOST: pushgateway
+          PUSHGATEWAY_PORT: ${{ job.services.pushgateway.ports[9091] }}
 
     strategy:
       matrix:
@@ -42,5 +43,5 @@ jobs:
           deno-version: ${{ matrix.deno }} # tests across multiple Deno versions
       - name: Run Tests
         run: |
-          echo echo ${{ job.services.pushgateway.ports['9091'] }}
+          echo echo port on ${{ job.services.pushgateway.ports['9091'] }}
           deno test --allow-env --allow-net

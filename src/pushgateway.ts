@@ -1,5 +1,6 @@
 import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
 import { Stringy } from "./types.ts";
+import { PUSHGATEWAY_HOST } from "./config.ts";
 
 /** PushGateway is an http connection to send data into a configured pushgateway.
  * data can be sent on an interval or at the time of calling send.
@@ -11,7 +12,7 @@ export class PushGateway {
     protocol: string;
     interval = -1;
 
-    constructor(job: string, hostname = "pushgateway:9091", pushInterval = 30000, protocol = "http") {
+    constructor(job: string, hostname = PUSHGATEWAY_HOST, pushInterval = 30000, protocol = "http") {
         this.job = job;
         this.hostname = hostname;
         this.pushInterval = pushInterval;
