@@ -1,33 +1,52 @@
 import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
+import { Stringy } from "./types.ts";
 
-const jobName = "my-pg-job";
-const pushgatewayHost = "my.pushgateway.com:9091";
+/** PushGateway is an http connection to send data into a configured pushgateway.
+ * data can be sent on an interval or at the time of calling send.
+ */
+export class PushGateway {
+    job: string;
+    hostname: string;
+    pushInterval: number;
+    protocol: string;
+    interval = -1;
 
-// function to push metrics to prometheus "pushgateway"
-export async function pushMetrics(
-    fileContent: string
-): Promise<void> {
-    const pgURL = getPushgatewayHostName(jobName);
-    try {
-        const cleanedUpFileContent = unescape(encodeURIComponent(fileContent));
-        const out = new TextEncoder().encode(cleanedUpFileContent);
+    constructor(job: string, hostname = "localhost:9091", pushInterval = 30000, protocol = "http") {
+        this.job = job;
+        this.hostname = hostname;
+        this.pushInterval = pushInterval;
+        this.protocol = protocol;
+    }
+
+    sendOnInterval(stringer: Stringy) {
+        this.interval = setInterval(() => {
+            this.send(stringer.toString());
+        }, this.pushInterval);
+    }
+
+    clearInterval() {
+        clearInterval(this.pushInterval);
+    }
+
+    async send(
+        fileContent: string
+    ): Promise<string> {
+
+        const url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`;
+        const out = new TextEncoder().encode(fileContent);
+
         const response = await fetch(
-            pgURL,
+            url,
             {
                 method: "POST",
                 body: out,
             },
         );
-        await response.text();
+        const responseBody = await response.text();
         if (!(response.status == 202 || response.status == 200)) {
-            log.error(`failed to POST to pushgateway URL ${pgURL}, status ${response.status}`);
+            throw new Error("status: ${response.status}\n${responseBody}");
         }
-    } catch (e) {
-        log.error(`unexpected error: failed to POST to pushgateway URL ${pgURL}, ${e}`);
+        return responseBody;
     }
-}
 
-function getPushgatewayHostName(pushgatewayJobName: string): string {
-    const pushgatewayURI = `metrics/job/${pushgatewayJobName}`;
-    return `http://${pushgatewayHost}/${pushgatewayURI}`;
 }

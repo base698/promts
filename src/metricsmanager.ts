@@ -1,7 +1,7 @@
 import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
 import { Sha256 } from "https://deno.land/std@0.71.0/hash/sha256.ts";
 import { Counter, Gauge, Histogram } from "../mod.ts";
-import { pushMetrics } from "./pushgateway.ts";
+import { PushGateway } from "./pushgateway.ts";
 import { Stringy, Labels, SUPRESS_HEADER } from "./types.ts";
 
 /**
@@ -216,7 +216,7 @@ class MetricsManagerImpl {
     initMetricsPush() {
         this.intervalID = setInterval(() => {
             log.debug("initMetricsPush has started");
-            pushMetrics(this.toString());
+            //pushMetrics(this.toString());
         }, 5000);
     }
 
