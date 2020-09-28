@@ -22,9 +22,8 @@ jobs:
       pushgateway:
         # Docker Hub image
         image: prom/pushgateway
-        ports:
-          # Maps tcp port 9091 on service container to the host
-          - 9091:9091
+        env:
+          PG_PORT: ${{ job.services.pushgateway.ports[9091] }}
 
     strategy:
       matrix:
