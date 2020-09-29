@@ -1,3 +1,8 @@
+/**
+ * Copyright Verizon Media, Licensed under the terms of the MIT license.
+ * See LICENSE file in project root for terms.
+ */
+
 import { Counter } from '../mod.ts';
 import { Metric, SUPRESS_HEADER, Labels } from './types.ts';
 

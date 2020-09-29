@@ -1,3 +1,8 @@
+/**
+ * Copyright Verizon Media, Licensed under the terms of the MIT license.
+ * See LICENSE file in project root for terms.
+ */
+
 import { assertEquals } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { Histogram } from "./histogram.ts";
 

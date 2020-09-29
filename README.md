@@ -1,7 +1,34 @@
+---
+id: promts
+title: README
+sidebar_label: README
+---
+
 # promts
 
-promts is a native TypeScript based implementation of promclient.
+promts is a native TypeScript based implementation of promclient. Create Prometheus compatible metrics for your TypeScript/Deno Service.
+
 Pronounced: Prom-tsss
+
+## Table of Contents
+
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [Contribute](#contribute)
+- [License](#license)
+
+## Background
+
+ Since no current TypeScript Native implementation for Node.JS or Deno seemed to exist, promts fills the gap. This allows for your TypeScript code to have type checking on the promclient types.
+
+## Install
+
+### Usage from Deno
+
+```ts
+    import { MetricsManager } from 'https://deno.land/x/promts@v0.1.4
+```
 
 ## Usage
 
@@ -54,33 +81,16 @@ Histograms can be though of as a list of counters.  These counters each represen
     const metricsData = MetricsManager.toString();
 ```
 
-## Setup for contributions
+## Contribute
 
-### Get nvm to install node.js and npm
+Please refer to [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for information about how to get involved. We welcome issues, questions, and pull requests.
 
-https://github.com/nvm-sh/nvm
+## Maintainers
+- Justin Thomas: jthomas@vdms.com
 
+## License
+- This project is licensed under the terms of the [MIT](LICENSE) open source license. Please refer to [LICENSE](LICENSE) for the full terms.
 
-### Get eslint
-
-```bash
-$ npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
-```
-
-### Get deno
-
-+ Install Deno: https://deno.land/manual/getting_started/installation
-
-
-### Run the pushgateway
-```
-$ docker run -d -p 9091:9091 prom/pushgateway
-```
-
-### Run the tests
-```
-$ make test
-```
 
 ## Future Roadmap
 

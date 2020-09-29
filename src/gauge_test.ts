@@ -1,3 +1,8 @@
+/**
+ * Copyright Verizon Media, Licensed under the terms of the MIT license.
+ * See LICENSE file in project root for terms.
+ */
+
 import { assertThrows, assertEquals } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { Gauge } from "./gauge.ts";
 

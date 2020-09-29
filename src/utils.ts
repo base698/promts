@@ -1,3 +1,8 @@
+/**
+ * Copyright Verizon Media, Licensed under the terms of the MIT license.
+ * See LICENSE file in project root for terms.
+ */
+
 import type { Labels } from './types.ts';
 
 export function toStringLabels(labels: Labels): string {

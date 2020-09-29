@@ -1,3 +1,8 @@
+/**
+ * Copyright Verizon Media, Licensed under the terms of the MIT license.
+ * See LICENSE file in project root for terms.
+ */
+
 import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
 import { Sha256 } from "https://deno.land/std@0.71.0/hash/sha256.ts";
 import { Counter, Gauge, Histogram } from "../mod.ts";
