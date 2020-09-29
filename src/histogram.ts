@@ -37,6 +37,9 @@ export class Histogram extends Metric {
         const clonedLabels = { ...labels };
         clonedLabels["le"] = `+Inf`;
         this.counters.push(new Counter(bucketName, clonedLabels));
+
+        this.buckets.sort((a: number, b: number) => a - b);
+
     }
 
     getSum(): number {
