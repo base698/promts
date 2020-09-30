@@ -3,7 +3,7 @@
  * See LICENSE file in project root for terms.
  */
 
-import { Stringy } from "./types.ts";
+import type { Stringy } from "./types.ts";
 import { PUSHGATEWAY_HOST } from "./config.ts";
 
 /** PushGateway is an http connection to send data into a configured pushgateway.
