@@ -10,7 +10,6 @@ import { Metric, SUPRESS_HEADER, Labels } from './types.ts';
 const defaultBuckets = [0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120];
 
 export class Histogram extends Metric {
-    // timestamp and value
     private buckets: number[];
     private counters: Counter[];
     private sum: Counter;
