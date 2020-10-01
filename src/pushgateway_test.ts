@@ -31,22 +31,6 @@ metrics_coll_total{instance="cache10.ama",handler="handler2"} 4
 });
 
 
-Deno.test("pushgateway.send() throws", async (): Promise<void> => {
-    const pushgateway = new PushGateway("test_job", "notahost:1234");
-
-    const mm = create();
-    const someOtherColl = mm.getCounter("counter_total");
-    const counter = someOtherColl.with({ instance: "cache40.ama" });
-    counter.inc();
-    counter.inc(5);
-
-    assertThrowsAsync(async () => {
-        return pushgateway.send(mm.toString());
-    });
-
-
-});
-
 Deno.test("pushgateway metricsmanager", async (): Promise<void> => {
     const pushgateway = new PushGateway("test_job");
 
