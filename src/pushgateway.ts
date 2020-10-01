@@ -44,7 +44,7 @@ export class PushGateway {
         const url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`;
         const out = new TextEncoder().encode(fileContent);
         const result = new Promise<string>((resolve, reject) => {
-            const response = fetch(
+            fetch(
                 url,
                 {
                     method: "POST",
@@ -58,8 +58,6 @@ export class PushGateway {
 
                 resolve(await response.text());
             }).catch(reject);
-
-
         });
 
         return result;
