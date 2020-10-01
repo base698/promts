@@ -3,7 +3,7 @@
  * See LICENSE file in project root for terms.
  */
 
-import { assertThrowsAsync, assertArrayContains } from "https://deno.land/std@0.71.0/testing/asserts.ts";
+import { assertArrayContains } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { PushGateway } from "./pushgateway.ts";
 import { PUSHGATEWAY_HOST } from "./config.ts";
 import { create } from "./metricsmanager.ts";
