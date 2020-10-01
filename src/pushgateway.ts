@@ -37,25 +37,32 @@ export class PushGateway {
         clearInterval(this.pushInterval);
     }
 
-    async send(
+    send(
         fileContent: string
     ): Promise<string> {
 
         const url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`;
         const out = new TextEncoder().encode(fileContent);
+        const result = new Promise<string>((resolve, reject) => {
+            const response = fetch(
+                url,
+                {
+                    method: "POST",
+                    body: out,
+                },
+            ).then(async (response) => {
+                if (!(response.status == 202 || response.status == 200)) {
+                    reject(new Error("expected 200.  status: ${response.status}"));
+                    return;
+                }
 
-        const response = await fetch(
-            url,
-            {
-                method: "POST",
-                body: out,
-            },
-        );
-        const responseBody = await response.text();
-        if (!(response.status == 202 || response.status == 200)) {
-            throw new Error("status: ${response.status}\n${responseBody}");
-        }
-        return responseBody;
+                resolve(await response.text());
+            }).catch(reject);
+
+
+        });
+
+        return result;
     }
 
 }
