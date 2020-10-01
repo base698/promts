@@ -25,7 +25,11 @@ export class PushGateway {
 
     sendOnInterval(stringer: Stringy): void {
         this.interval = setInterval(() => {
-            this.send(stringer.toString());
+	   try {
+               this.send(stringer.toString());
+	    } catch(e) {
+	       console.error(`pushgateway ${this.job} ${this.protocol}://${this.hostname} failed.`);
+	    }
         }, this.pushInterval);
     }
 
