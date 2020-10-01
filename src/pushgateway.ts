@@ -58,7 +58,7 @@ export class PushGateway {
             }
             return responseBody;
         } catch (e) {
-            console.error(`failed to  ${this.job} ${this.protocol}://${this.hostname} failed.`);
+            console.error(`failed to POST to ${this.job} ${this.protocol}://${this.hostname} using fetch.`);
             return "";
         }
 
