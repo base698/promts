@@ -86,7 +86,7 @@ class HistogramCollection extends MetricCollection<Histogram> {
 
     create(labels: Labels = {}): Histogram {
         const metric: Histogram = new Histogram(
-            super.name,
+            this.name,
             labels
         );
 
