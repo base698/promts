@@ -64,7 +64,6 @@ export class Histogram extends Metric {
         for (let i = 0; i < this.buckets.length; i++) {
             if (value <= this.buckets[i]) {
                 this.counters[i].inc();
-                return;
             }
         }
         this.counters.slice(-1)[0].inc();
