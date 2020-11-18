@@ -15,12 +15,17 @@ export class PushGateway {
     pushInterval: number;
     protocol: string;
     interval = -1;
+    url: string;
 
-    constructor(job: string, hostname = PUSHGATEWAY_HOST, pushInterval = 30000, protocol = "http") {
+    constructor(job: string, hostname = PUSHGATEWAY_HOST, pushInterval = 30000, protocol = "http", instance? : string) {
         this.job = job;
         this.hostname = hostname;
         this.pushInterval = pushInterval;
         this.protocol = protocol;
+        this.url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`
+        if (instance != undefined && instance != "") {
+            this.url = `${this.url}/${instance}`
+        }
     }
 
     sendOnInterval(stringer: Stringy): void {
@@ -28,7 +33,7 @@ export class PushGateway {
             try {
                 this.send(stringer.toString());
             } catch (e) {
-                console.error(`pushgateway ${this.job} ${this.protocol}://${this.hostname} failed.`);
+                console.error(`failed to send on interval to ${this.url}`);
             }
         }, this.pushInterval);
     }
@@ -41,11 +46,10 @@ export class PushGateway {
         fileContent: string
     ): Promise<string> {
 
-        const url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`;
         const out = new TextEncoder().encode(fileContent);
         try {
             const response = await fetch(
-                url,
+                this.url,
                 {
                     method: "POST",
                     body: out,
@@ -58,7 +62,7 @@ export class PushGateway {
             }
             return responseBody;
         } catch (e) {
-            console.error(`failed to POST to ${this.job} ${this.protocol}://${this.hostname} using fetch: `, e);
+            console.error(`failed to POST to ${this.url} using fetch: `, e);
             return "";
         }
 
