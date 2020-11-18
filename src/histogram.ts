@@ -6,8 +6,8 @@
 import { Counter } from '../mod.ts';
 import { Metric, SUPRESS_HEADER, Labels } from './types.ts';
 
-// 50  100  200  400  600 1000 ... ms
-const defaultBuckets = [0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120];
+//                      10   100  200  400  600 1000 ... ms
+const defaultBuckets = [0.01, 0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120];
 
 export class Histogram extends Metric {
     private buckets: number[];

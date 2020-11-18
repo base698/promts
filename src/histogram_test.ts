@@ -7,7 +7,7 @@ import { assertEquals } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { Histogram } from "./histogram.ts";
 
 Deno.test("Histogram", async (): Promise<void> => {
-    // Buckets: [0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120, +Inf];
+    // Buckets: [0.01, 0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120, +Inf];
     const histogram = new Histogram("http_request_duration");
     histogram.observe(0.01);
     histogram.observe(0.1);
@@ -18,13 +18,13 @@ Deno.test("Histogram", async (): Promise<void> => {
 
     histogram.observe(300);
     histogram.observe(300);
-    assertEquals(histogram.getObserved(10), 6); // le=+Inf
+    assertEquals(histogram.getObserved(11), 6); // le=+Inf
     histogram.observe(50);
     histogram.observe(50);
     histogram.observe(50);
     histogram.observe(50);
-    assertEquals(histogram.getObserved(8), 8); // le=60
-    assertEquals(histogram.getObserved(7), 4); // le=20
+    assertEquals(histogram.getObserved(9), 8); // le=60
+    assertEquals(histogram.getObserved(8), 4); // le=20
 });
 
 
@@ -44,6 +44,7 @@ Deno.test("Histogram toString()", async (): Promise<void> => {
     histogram.observe(50);
 
     const expected = `# TYPE http_request_duration histogram
+http_request_duration_bucket{le="0.01"} 1
 http_request_duration_bucket{le="0.1"} 2
 http_request_duration_bucket{le="0.2"} 2
 http_request_duration_bucket{le="0.4"} 2
