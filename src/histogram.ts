@@ -23,8 +23,8 @@ export class Histogram extends Metric {
     ) {
         super(name, labels, help);
         this.buckets = buckets;
-        this.sum = new Counter(name + "_sum");
-        this.count = new Counter(name + "_count");
+        this.sum = new Counter(name + "_sum", labels);
+        this.count = new Counter(name + "_count", labels);
         const bucketName = name + "_bucket";
 
         this.counters = buckets.map((n) => {
