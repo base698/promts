@@ -24,7 +24,7 @@ export class PushGateway {
         this.protocol = protocol;
         this.url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`
         if (instance != undefined && instance != "") {
-            this.url = `${this.url}/${instance}`
+            this.url = `${this.url}/instance/${instance}`
         }
     }
 
