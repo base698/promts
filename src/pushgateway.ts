@@ -6,6 +6,8 @@
 import type { Stringy } from "./types.ts";
 import { PUSHGATEWAY_HOST } from "./config.ts";
 
+const backoff = [2, 4, 8, 16, 32];
+
 /** PushGateway is an http connection to send data into a configured pushgateway.
  * data can be sent on an interval or at the time of calling send.
  */
@@ -14,32 +16,62 @@ export class PushGateway {
     hostname: string;
     pushInterval: number;
     protocol: string;
-    interval = -1;
+    interval: number = -1;
     url: string;
+    failures: number;
+    lastAttempt: number;
+    http: any;
 
-    constructor(job: string, hostname = PUSHGATEWAY_HOST, pushInterval = 30000, protocol = "http", instance? : string) {
+    constructor(job: string, hostname = PUSHGATEWAY_HOST, pushInterval = 30000, protocol = "http", instance? : string, http:any = fetch) {
         this.job = job;
         this.hostname = hostname;
         this.pushInterval = pushInterval;
         this.protocol = protocol;
+        this.failures = 0;
+        this.http = http;
+        this.lastAttempt = 0;
         this.url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`
         if (instance != undefined && instance != "") {
             this.url = `${this.url}/instance/${instance}`
         }
     }
 
+    setLastAttempt(): void {
+        this.lastAttempt = Date.now() / 1000;
+    }
+
+    doRequest(): boolean {
+        if(this.failures == 0) {
+            return true;
+        }
+
+        var backoffIdx = this.failures - 1;
+        if(backoffIdx >= backoff.length) {
+            backoffIdx = backoff.length - 1;
+        }
+
+        const seconds = backoff[backoffIdx];
+        const timeToSend = (Date.now() / 1000) - seconds;
+        return this.lastAttempt < timeToSend;
+    }
+
     sendOnInterval(stringer: Stringy): void {
-        this.interval = setInterval(() => {
+        this.interval = setInterval(async () => {
             try {
-                this.send(stringer.toString());
+                if(this.doRequest()) {
+                    this.setLastAttempt();
+                    await this.send(stringer.toString());
+                    this.failures = 0;
+                }
             } catch (e) {
-                console.error(`failed to send on interval to ${this.url}`);
+                this.failures += 1;
+                console.log(e);
             }
         }, this.pushInterval);
     }
 
     clearInterval(): void {
-        clearInterval(this.pushInterval);
+        console.log(clearInterval(this.interval))
     }
 
     async send(
@@ -47,25 +79,19 @@ export class PushGateway {
     ): Promise<string> {
 
         const out = new TextEncoder().encode(fileContent);
-        try {
-            const response = await fetch(
-                this.url,
-                {
-                    method: "POST",
-                    body: out,
-                },
-            );
-            
-            const responseBody = await response.text();
-            if (!(response.status == 202 || response.status == 200)) {
-                throw new Error("status: ${response.status}\n${responseBody}");
-            }
-            return responseBody;
-        } catch (e) {
-            console.error(`failed to POST to ${this.url} using fetch: `, e);
-            return "";
-        }
+        const response = await this.http(
+            this.url,
+            {
+                method: "POST",
+                body: out,
+            },
+        );
 
+        const responseBody = await response.text();
+        if (!(response.status == 202 || response.status == 200)) {
+            throw new Error("status: ${response.status}\n${responseBody}");
+        }
+        return responseBody;
     }
 
 }
