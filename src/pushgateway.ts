@@ -16,12 +16,14 @@ export class PushGateway {
     hostname: string;
     pushInterval: number;
     protocol: string;
-    interval: number = -1;
+    interval: number;
     url: string;
     failures: number;
     lastAttempt: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     http: any;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(job: string, hostname = PUSHGATEWAY_HOST, pushInterval = 30000, protocol = "http", instance? : string, http:any = fetch) {
         this.job = job;
         this.hostname = hostname;
@@ -30,6 +32,7 @@ export class PushGateway {
         this.failures = 0;
         this.http = http;
         this.lastAttempt = 0;
+        this.interval = -1;
         this.url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`
         if (instance != undefined && instance != "") {
             this.url = `${this.url}/instance/${instance}`
@@ -45,7 +48,7 @@ export class PushGateway {
             return true;
         }
 
-        var backoffIdx = this.failures - 1;
+        let backoffIdx = this.failures - 1;
         if(backoffIdx >= backoff.length) {
             backoffIdx = backoff.length - 1;
         }

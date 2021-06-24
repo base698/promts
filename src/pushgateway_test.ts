@@ -67,11 +67,12 @@ export class MockResponse {
         this.status = status;
     }
 
-    async text() {
+    async text(): Promise<string> {
       return this.body;
     }
 
-    async json() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async json(): Promise<any> {
        return JSON.parse(this.body);
     }
 
@@ -82,7 +83,7 @@ export class MockFetch {
     throwException: boolean;
     errorMsg: string;
     numCalls: number;
-    fetch: (url:string, opts:any) => Promise<MockResponse>;
+    fetch: (url:string) => Promise<MockResponse>;
 
     constructor(body="test body",status=200,throwException=false,errorMsg="default error") {
        this.response = new MockResponse("/", body, status);
@@ -90,10 +91,10 @@ export class MockFetch {
        this.errorMsg = errorMsg;
        this.numCalls = 0;
 
-       this.fetch = async (url:string, opts:any={}): Promise<MockResponse> => {
+       this.fetch = async (url:string): Promise<MockResponse> => {
           this.numCalls++;
           if(this.throwException) {
-              throw new Error(this.errorMsg);
+              throw new Error(this.errorMsg, url);
           }
 
           return this.response;
