@@ -94,7 +94,7 @@ export class MockFetch {
        this.fetch = async (url:string): Promise<MockResponse> => {
           this.numCalls++;
           if(this.throwException) {
-              throw new Error(this.errorMsg, url);
+              throw new Error(this.errorMsg + " " + url);
           }
 
           return this.response;
