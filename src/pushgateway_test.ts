@@ -7,6 +7,7 @@ import { delay } from "https://deno.land/std@0.99.0/async/delay.ts";
 import { assertEquals,assertArrayIncludes } from "https://deno.land/std@0.99.0/testing/asserts.ts";
 import { PushGateway } from "./pushgateway.ts";
 import { PUSHGATEWAY_HOST } from "./config.ts";
+import { MockResponse, MockFetch } from "./mocks.ts";
 import { create } from "./metricsmanager.ts";
 
 
@@ -55,54 +56,6 @@ Deno.test("pushgateway metricsmanager", async (): Promise<void> => {
     assertArrayIncludes(splitArr, expected);
 
 });
-
-export class MockResponse {
-    url: string;
-    body: string;
-    status: number;
-
-    constructor(url="/", body="test body",status=200) {
-        this.url = url;
-        this.body = body;
-        this.status = status;
-    }
-
-    async text(): Promise<string> {
-      return this.body;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async json(): Promise<any> {
-       return JSON.parse(this.body);
-    }
-
-}
-
-export class MockFetch {
-    response: MockResponse;
-    throwException: boolean;
-    errorMsg: string;
-    numCalls: number;
-    fetch: (url:string) => Promise<MockResponse>;
-
-    constructor(body="test body",status=200,throwException=false,errorMsg="default error") {
-       this.response = new MockResponse("/", body, status);
-       this.throwException = throwException;
-       this.errorMsg = errorMsg;
-       this.numCalls = 0;
-
-       this.fetch = async (url:string): Promise<MockResponse> => {
-          this.numCalls++;
-          if(this.throwException) {
-              throw new Error(this.errorMsg + " " + url);
-          }
-
-          return this.response;
-       }
-    }
-
-
-}
 
 const THROW_EXCEPTION = true;
 
