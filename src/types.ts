@@ -1,5 +1,5 @@
 /**
- * Copyright Verizon Media, Licensed under the terms of the MIT license.
+ * Copyright EdgeCast, Licensed under the terms of the MIT license.
  * See LICENSE file in project root for terms.
  */
 
