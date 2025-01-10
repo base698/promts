@@ -3,7 +3,7 @@
  * See LICENSE file in project root for terms.
  */
 
-import { validateMetricName, validateLabelName } from './utils.ts';
+import { validateMetricName, validateLabelName } from "./utils.ts";
 export type Labels = Record<string, string>;
 export type Point = [number, number];
 export type TimeSeries = Point[];
@@ -12,35 +12,43 @@ export const TS = 0;
 export const SUPRESS_HEADER = true;
 
 export interface Stringy {
-    toString(suppress?: boolean): string
+  toString(suppress?: boolean): string;
 }
 
 export abstract class Metric {
-    labels: Labels;
-    name: string;
-    help: string;
+  public abstract toString(suppress?: boolean): string;
+  public labels: Labels;
+  public name: string;
+  help: string;
 
-    constructor(name: string, labels: Labels = {}, help = '') {
-        if (!validateMetricName(name)) {
-            throw new Error(`Metric name ${name} is invalid.`)
-        }
+  public getLabels(): Labels {
+    return this.labels;
+  }
 
-        const labelErrors: string[] = [];
-        Object.keys(labels).forEach(name => {
-            if (!validateLabelName(name)) {
-                labelErrors.push(`  ${name}`);
-            }
-        });
+  public getName(): string {
+    return this.name;
+  }
 
-        if (labelErrors.length > 0) {
-            labelErrors.unshift('Label names are invalid:');
-            const result = labelErrors.join('\n');
-            throw new Error(result);
-        }
-
-        this.name = name;
-        this.labels = labels;
-        this.help = help;
+  constructor(name: string, labels: Labels = {}, help = "") {
+    if (!validateMetricName(name)) {
+      throw new Error(`Metric name ${name} is invalid.`);
     }
 
+    const labelErrors: string[] = [];
+    Object.keys(labels).forEach((name) => {
+      if (!validateLabelName(name)) {
+        labelErrors.push(`  ${name}`);
+      }
+    });
+
+    if (labelErrors.length > 0) {
+      labelErrors.unshift("Label names are invalid:");
+      const result = labelErrors.join("\n");
+      throw new Error(result);
+    }
+
+    this.name = name;
+    this.labels = labels;
+    this.help = help;
+  }
 }

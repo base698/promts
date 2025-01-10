@@ -6,44 +6,53 @@
 import { assertEquals } from "https://deno.land/std@0.71.0/testing/asserts.ts";
 import { Histogram } from "./histogram.ts";
 
+/**
+ * This test suite is for validating the functionality of the Histogram class.
+ *
+ * It includes tests to ensure that:
+ * - Observations are correctly added to the histogram.
+ * - The histogram accurately counts the number of observations.
+ * - The sum of all observations is calculated correctly.
+ * - The correct number of observations are placed in each bucket.
+ * - The histogram's string representation matches the expected Prometheus format output.
+ */
 Deno.test("Histogram", async (): Promise<void> => {
-    // Buckets: [0.01, 0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120, +Inf];
-    const histogram = new Histogram("http_request_duration");
-    histogram.observe(0.01);
-    histogram.observe(0.1);
-    histogram.observe(5);
-    histogram.observe(5);
-    assertEquals(histogram.getCount(), 4);
-    assertEquals(histogram.getSum(), 10.11);
+  // Buckets: [0.01, 0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120, +Inf];
+  const histogram = new Histogram("http_request_duration");
+  histogram.observe(0.01);
+  histogram.observe(0.1);
+  histogram.observe(5);
+  histogram.observe(5);
+  assertEquals(histogram.getCount(), 4);
+  assertEquals(histogram.getSum(), 10.11);
 
-    histogram.observe(300);
-    histogram.observe(300);
-    assertEquals(histogram.getObserved(11), 6); // le=+Inf
-    histogram.observe(50);
-    histogram.observe(50);
-    histogram.observe(50);
-    histogram.observe(50);
-    assertEquals(histogram.getObserved(9), 8); // le=60
-    assertEquals(histogram.getObserved(8), 4); // le=20
+  histogram.observe(300);
+  histogram.observe(300);
+  assertEquals(histogram.getObserved(11), 6); // le=+Inf
+  histogram.observe(50);
+  histogram.observe(50);
+  histogram.observe(50);
+  histogram.observe(50);
+  assertEquals(histogram.getObserved(9), 8); // le=60
+  assertEquals(histogram.getObserved(8), 4); // le=20
 });
 
-
 Deno.test("Histogram toString()", async (): Promise<void> => {
-    const histogram = new Histogram("http_request_duration");
-    histogram.observe(0.01);
-    histogram.observe(0.1);
-    histogram.observe(5);
-    histogram.observe(5);
+  const histogram = new Histogram("http_request_duration");
+  histogram.observe(0.01);
+  histogram.observe(0.1);
+  histogram.observe(5);
+  histogram.observe(5);
 
-    histogram.observe(300);
-    histogram.observe(300);
+  histogram.observe(300);
+  histogram.observe(300);
 
-    histogram.observe(50);
-    histogram.observe(50);
-    histogram.observe(50);
-    histogram.observe(50);
+  histogram.observe(50);
+  histogram.observe(50);
+  histogram.observe(50);
+  histogram.observe(50);
 
-    const expected = `# TYPE http_request_duration histogram
+  const expected = `# TYPE http_request_duration histogram
 http_request_duration_bucket{le="0.01"} 1
 http_request_duration_bucket{le="0.1"} 2
 http_request_duration_bucket{le="0.2"} 2
@@ -60,5 +69,5 @@ http_request_duration_sum{} 810.11
 http_request_duration_count{} 10
 `;
 
-    assertEquals(histogram.toString(), expected);
+  assertEquals(histogram.toString(), expected);
 });
