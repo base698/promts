@@ -86,11 +86,10 @@ Histograms can be though of as a list of counters.  These counters each represen
 Please refer to [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for information about how to get involved. We welcome issues, questions, and pull requests.
 
 ## Maintainers
-- Justin Thomas: jthomas@vdms.com
+- Justin Thomas: justin.thomas1@gmail.com
 
 ## License
 - This project is licensed under the terms of the [MIT](LICENSE) open source license. Please refer to [LICENSE](LICENSE) for the full terms.
-
 
 ## Future Roadmap
 
