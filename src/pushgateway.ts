@@ -16,7 +16,7 @@ export class PushGateway {
   hostname: string;
   pushInterval: number;
   protocol: string;
-  interval: number;
+  interval?: ReturnType<typeof setInterval>;
   url: string;
   failures: number;
   lastAttempt: number;
@@ -39,7 +39,6 @@ export class PushGateway {
     this.failures = 0;
     this.http = http;
     this.lastAttempt = 0;
-    this.interval = -1;
     this.url = `${this.protocol}://${this.hostname}/metrics/job/${this.job}`;
     if (instance != undefined && instance != "") {
       this.url = `${this.url}/instance/${instance}`;

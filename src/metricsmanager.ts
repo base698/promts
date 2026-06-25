@@ -102,7 +102,7 @@ class MetricsManagerImpl {
   private counterColl: Record<string, MetricCollection<Counter>>;
   private gaugeColl: Record<string, MetricCollection<Gauge>>;
   private summaryColl: Record<string, MetricCollection<Summary>>;
-  private intervalID: number;
+  private intervalID?: ReturnType<typeof setInterval>;
   private names = new Set();
 
   constructor() {
@@ -110,7 +110,6 @@ class MetricsManagerImpl {
     this.gaugeColl = {};
     this.counterColl = {};
     this.summaryColl = {};
-    this.intervalID = -1;
   }
 
   initSystem() {

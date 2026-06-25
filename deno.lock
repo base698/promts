@@ -12,16 +12,10 @@
     "https://deno.land/std@0.71.0/log/logger.ts": "53690b789cc64bec3f65b61ec29a59a5f570a1db6263f9ca518993c4137ff243",
     "https://deno.land/std@0.71.0/log/mod.ts": "8a7ddeb691b24ecac9f13ba340ba2776740fcd79ed4674408e48087b6af6ffec",
     "https://deno.land/std@0.71.0/testing/asserts.ts": "5c4e1e7a8b9b0be3b5e6d4dabe8407e5de7f55d43a7a96f1e75a78acfb03cd04",
-    "https://deno.land/std@0.71.0/testing/diff.ts": "b685fb818c3527f0890628711934863672de2e94f01db421731654243f1eac8f"
-  },
-  "workspace": {
-    "packageJson": {
-      "dependencies": [
-        "npm:@typescript-eslint/eslint-plugin@^4.26.1",
-        "npm:@typescript-eslint/parser@^4.26.1",
-        "npm:eslint@^7.28.0",
-        "npm:typescript@^4.3.2"
-      ]
-    }
+    "https://deno.land/std@0.71.0/testing/diff.ts": "b685fb818c3527f0890628711934863672de2e94f01db421731654243f1eac8f",
+    "https://deno.land/std@0.99.0/async/delay.ts": "9de1d8d07d1927767ab7f82434b883f3d8294fb19cad819691a2ad81a728cf3d",
+    "https://deno.land/std@0.99.0/fmt/colors.ts": "db22b314a2ae9430ae7460ce005e0a7130e23ae1c999157e3bb77cf55800f7e4",
+    "https://deno.land/std@0.99.0/testing/_diff.ts": "961eaf6d9f5b0a8556c9d835bbc6fa74f5addd7d3b02728ba7936ff93364f7a3",
+    "https://deno.land/std@0.99.0/testing/asserts.ts": "289b6ccf3b422ffb311cbf56996960d6530f8d8c0a7281803764c5ec672f9f9c"
   }
 }
