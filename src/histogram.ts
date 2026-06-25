@@ -4,7 +4,7 @@
  */
 
 import { Counter } from "../mod.ts";
-import { Metric, SUPRESS_HEADER, Labels } from "./types.ts";
+import { Labels, Metric, SUPRESS_HEADER } from "./types.ts";
 
 //                      10   100  200  400  600 1000 ... ms
 const defaultBuckets = [0.01, 0.1, 0.2, 0.4, 0.6, 1, 3, 8, 20, 60, 120];
@@ -22,12 +22,14 @@ export class Histogram extends Metric {
     buckets: number[] = defaultBuckets,
   ) {
     super(name, labels, help);
-    this.buckets = buckets;
+    // Sort up front so the bucket boundaries and their counters always line
+    // up in observe(), even when the caller passes unsorted buckets.
+    this.buckets = [...buckets].sort((a: number, b: number) => a - b);
     this.sum = new Counter(name + "_sum", labels);
     this.count = new Counter(name + "_count", labels);
     const bucketName = name + "_bucket";
 
-    this.counters = buckets.map((n) => {
+    this.counters = this.buckets.map((n) => {
       const clonedLabels = { ...labels };
       clonedLabels["le"] = `${n}`;
       return new Counter(bucketName, clonedLabels);
@@ -36,8 +38,6 @@ export class Histogram extends Metric {
     const clonedLabels = { ...labels };
     clonedLabels["le"] = `+Inf`;
     this.counters.push(new Counter(bucketName, clonedLabels));
-
-    this.buckets.sort((a: number, b: number) => a - b);
   }
 
   getSum(): number {

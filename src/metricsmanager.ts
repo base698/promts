@@ -5,14 +5,13 @@
 
 import * as log from "https://deno.land/std@0.71.0/log/mod.ts";
 import { Sha256 } from "https://deno.land/std@0.71.0/hash/sha256.ts";
-import { Counter, Gauge, Histogram } from "../mod.ts";
-import { Stringy, Labels, SUPRESS_HEADER } from "./types.ts";
+import { Counter, Gauge, Histogram, Summary } from "../mod.ts";
+import { Labels, Stringy, SUPRESS_HEADER } from "./types.ts";
 
 /**
  * MetricsCollection is the abstract implementation of a metriccollection
  * of like type with different labels.
  * It groups metrics under the same header.
- *
  */
 abstract class MetricCollection<T extends Stringy> {
   public name: string;
@@ -85,6 +84,14 @@ class HistogramCollection extends MetricCollection<Histogram> {
   }
 }
 
+class SummaryCollection extends MetricCollection<Summary> {
+  metricType = "summary";
+
+  create(labels: Labels = {}): Summary {
+    return new Summary(this.name, labels);
+  }
+}
+
 /**
  * MetricsManagerImpl is the global store for all prometheus based metrics.
  * It offers convience methods for creating and looking up metrics by names
@@ -94,6 +101,7 @@ class MetricsManagerImpl {
   private histogramColl: Record<string, MetricCollection<Histogram>>;
   private counterColl: Record<string, MetricCollection<Counter>>;
   private gaugeColl: Record<string, MetricCollection<Gauge>>;
+  private summaryColl: Record<string, MetricCollection<Summary>>;
   private intervalID: number;
   private names = new Set();
 
@@ -101,6 +109,7 @@ class MetricsManagerImpl {
     this.histogramColl = {};
     this.gaugeColl = {};
     this.counterColl = {};
+    this.summaryColl = {};
     this.intervalID = -1;
   }
 
@@ -181,6 +190,28 @@ class MetricsManagerImpl {
     return metricColl;
   }
 
+  /**
+   * Returns a summary metric collection from global metric storage by name.
+   * If the metric does not exist it will be created.
+   *
+   * ```ts
+   * const latency = MetricsManager.getSummary("request_latency_seconds").with({"service":"web"});
+   * latency.observe(0.34);
+   * ```
+   *
+   * @param metric the metric name
+   */
+  getSummary(metric: string): SummaryCollection {
+    let metricColl = this.summaryColl[metric];
+
+    if (!metricColl) {
+      metricColl = this.summaryColl[metric] = new SummaryCollection(metric);
+      this.names.add(metric);
+    }
+
+    return metricColl;
+  }
+
   /** Outputs all in memory metrics to a string.  To be used by `/metrics` or
    * or in pushing to a gateway.
    *
@@ -199,6 +230,14 @@ class MetricsManagerImpl {
     }
 
     for (const [, v] of Object.entries(this.counterColl)) {
+      result = result.concat(v.toString());
+    }
+
+    for (const [, v] of Object.entries(this.gaugeColl)) {
+      result = result.concat(v.toString());
+    }
+
+    for (const [, v] of Object.entries(this.summaryColl)) {
       result = result.concat(v.toString());
     }
 
