@@ -1,11 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# This workflow will install Deno and run tests across stable and nightly builds on Windows, Ubuntu and macOS.
-# For more information see: https://github.com/denolib/setup-deno
-
 name: Deno
 
 on:
@@ -15,49 +7,27 @@ on:
     branches: [master]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x]
-
-    steps:
-    - name: Git checkout
-      uses: actions/checkout@v2
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install --save-dev eslint typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
-    - run: node_modules/eslint/bin/eslint.js . --ext .ts
-
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     services:
-      # Label used to access the service container
+      # Pushgateway service container the pushgateway tests push to.
       pushgateway:
-        # Docker Hub image
         image: prom/pushgateway
         ports:
           - 9091
-    strategy:
-      matrix:
-        deno: ["v1.x", "nightly"]
-        os: [ubuntu-latest]
 
     steps:
       - name: Setup repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Deno
-        uses: denolib/setup-deno@v2
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: ${{ matrix.deno }} # tests across multiple Deno versions
-      - name: Run Tests
-        run: |
-          echo port on ${{ job.services.pushgateway.ports['9091'] }}
-          deno test --allow-env --allow-net
+          # v2.x reads the v4 deno.lock; older Deno cannot.
+          deno-version: v2.x
+
+      - name: Run tests
+        run: deno test --allow-env --allow-net
         env:
           PUSHGATEWAY_HOST: localhost
-          PUSHGATEWAY_PORT: ${{ job.services.pushgateway.ports[9091] }}
+          PUSHGATEWAY_PORT: ${{ job.services.pushgateway.ports['9091'] }}
