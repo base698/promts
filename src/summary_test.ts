@@ -23,11 +23,23 @@ Deno.test("Summary", async (): Promise<void> => {
   assertEquals(summary.getCount(), 3);
   assertEquals(summary.getSum(), 0.8);
 
-  // Quantile checks could be more elaborate if quantile logic is implemented.
+  // Nearest-rank quantiles over the observed values [0.1, 0.2, 0.5].
+  assertEquals(summary.getObserved(0.5), 0.2);
+  assertEquals(summary.getObserved(0.9), 0.5);
+  assertEquals(summary.getObserved(0.99), 0.5);
+
+  // A quantile that wasn't configured as an objective.
   assertThrows(
     () => summary.getObserved(0.98),
     Error,
     "quantile not found: 0.98",
+  );
+
+  // A quantile outside [0, 1].
+  assertThrows(
+    () => summary.getObserved(1.5),
+    Error,
+    "quantile out of bounds: 1.5",
   );
 });
 
@@ -44,9 +56,9 @@ Deno.test("Summary toString()", async (): Promise<void> => {
   summary.observe(0.2, { service: "database" });
 
   const expected = `# TYPE service_latency_seconds summary
-service_latency_seconds_quantile{quantile="0.5"} 0
-service_latency_seconds_quantile{quantile="0.9"} 0
-service_latency_seconds_quantile{quantile="0.99"} 0
+service_latency_seconds_quantile{quantile="0.5"} 0.2
+service_latency_seconds_quantile{quantile="0.9"} 0.5
+service_latency_seconds_quantile{quantile="0.99"} 0.5
 service_latency_seconds_sum{} 0.8
 service_latency_seconds_count{} 3
 `;

@@ -1,0 +1,27 @@
+{
+  "version": "4",
+  "remote": {
+    "https://deno.land/std@0.71.0/_util/assert.ts": "e1f76e77c5ccb5a8e0dbbbe6cce3a56d2556c8cb5a9a8802fc9565af72462149",
+    "https://deno.land/std@0.71.0/bytes/mod.ts": "b1a149ac741728db00bda9ce1a2d044f248edd5ac95e708a6cc501bfd3adb4a7",
+    "https://deno.land/std@0.71.0/fmt/colors.ts": "ce9375edade12ca09c257743f223fc469d72578d0c74a55cbf1a34f6198ce3df",
+    "https://deno.land/std@0.71.0/fs/exists.ts": "5429dce6587bfcdde06a7a2a1fd5ad932c17d74ca082e67934fa646cff1d2e57",
+    "https://deno.land/std@0.71.0/hash/sha256.ts": "1025d54d0a307f941380de0e7264054a0076a323ea3cff64171f9fdd81f011d8",
+    "https://deno.land/std@0.71.0/io/bufio.ts": "9fdfcd7e408aa01cbd31e5d8c90cb8a648635db12e05ba78534296e696c635ee",
+    "https://deno.land/std@0.71.0/log/handlers.ts": "2c4fb9dca841efb551aac78dcb64db410ca4c4e7878aff2b49806d4a95621447",
+    "https://deno.land/std@0.71.0/log/levels.ts": "d274b41f2dc909c6eef4e71c8a50ccbc81ea4e1df28cb268f02942966a205593",
+    "https://deno.land/std@0.71.0/log/logger.ts": "53690b789cc64bec3f65b61ec29a59a5f570a1db6263f9ca518993c4137ff243",
+    "https://deno.land/std@0.71.0/log/mod.ts": "8a7ddeb691b24ecac9f13ba340ba2776740fcd79ed4674408e48087b6af6ffec",
+    "https://deno.land/std@0.71.0/testing/asserts.ts": "5c4e1e7a8b9b0be3b5e6d4dabe8407e5de7f55d43a7a96f1e75a78acfb03cd04",
+    "https://deno.land/std@0.71.0/testing/diff.ts": "b685fb818c3527f0890628711934863672de2e94f01db421731654243f1eac8f"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@typescript-eslint/eslint-plugin@^4.26.1",
+        "npm:@typescript-eslint/parser@^4.26.1",
+        "npm:eslint@^7.28.0",
+        "npm:typescript@^4.3.2"
+      ]
+    }
+  }
+}
